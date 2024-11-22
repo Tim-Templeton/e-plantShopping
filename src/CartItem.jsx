@@ -6,30 +6,45 @@ import './CartItem.css';
 const CartItem = ({ onContinueShopping }) => {
   const cart = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
+  const [totalQuantity, setTotalQuantity] = React.useState(0);
 
   // Calculate total amount for all products in the cart
-  const calculateTotalAmount = () => {
- 
-  };
+  const calculateTotalAmount = (items) => {
+    return items.reduce((total, item) => {
+        const itemSubtotal = item.quantity * item.cost;
+        return total + itemSubtotal;
+    }, 0);
+    };
 
-  const handleContinueShopping = (e) => {
-   
-  };
+    // ?
+    useEffect(() => {
+        const total = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+        setTotalQuantity(total);
+    }, [cartItems]);
 
-
+  const handleCheckoutShopping = (e) => {
+    alert('Functionality to be added for future reference');
+    };
 
   const handleIncrement = (item) => {
+    dispatch(updateQuantity({ id: item.id, quantity: item.quantity + 1 }));
   };
 
   const handleDecrement = (item) => {
-   
-  };
+    if (item.quantity > 1) {
+      dispatch(updateQuantity({ id: item.id, quantity: item.quantity - 1 }));
+    } else {
+        handleRemove();
+    }
+   };
 
   const handleRemove = (item) => {
+    dispatch(removeItem(item.id));
   };
 
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
+    return item.quantity * item.cost;
   };
 
   return (
